@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Etiquetas - Migración TN</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f2f4f7;
+      margin: 0;
+      padding: 40px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 680px;
+      border-radius: 16px;
+      padding: 35px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+      color: #000000;
+    }
+
+    .header p {
+      margin: 0;
+      color: #6e6e73;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d1d6;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      background-color: #ffffff;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #0071e3;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #a1a1a6;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 13px 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      background-color: #1c1c1e;
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background-color: #e5e5ea;
+      color: #1c1c1e;
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+      background-color: #fafafa;
+    }
+
+    .example-box {
+      background-color: #ececed;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 25px;
+      font-size: 0.88rem;
+    }
+
+    .example-box strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #1c1c1e;
+    }
+
+    .example-code {
+      font-family: monospace;
+      word-break: break-all;
+      color: #222222;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Generador de Etiquetas</h1>
+      <p>Migración TN</p>
+    </div>
+
+    <form id="etiquetaForm">
+      <!-- Tipo de Zona -->
+      <div class="form-group">
+        <label for="tipoZona">Tipo de zona</label>
+        <select id="tipoZona">
+          <option value="" disabled selected>Seleccione una opción</option>
+          <option value="Zona Abierta">Zona Abierta</option>
+          <option value="Zona Cerrada">Zona Cerrada</option>
+        </select>
+      </div>
+
+      <!-- Número de Tarea -->
+      <div class="form-group">
+        <label for="numTarea">Número de tarea</label>
+        <input type="text" id="numTarea" placeholder="Ejemplo: 165211398">
+      </div>
+
+      <!-- Elemento / Splitter -->
+      <div class="form-group">
+        <label for="elemento">Elemento / Splitter</label>
+        <input type="text" id="elemento" placeholder="Ejemplo: OLTZTEHD1SanJuandeCalderonUIO-G8/14-F01.N/A-L2-H0.0-3-PCH09B-3A-C">
+      </div>
+
+      <!-- Técnico -->
+      <div class="form-group">
+        <label for="tecnico">Técnico que habilita</label>
+        <input type="text" id="tecnico" placeholder="Ejemplo: Roberto Soria">
+      </div>
+
+      <!-- Botones -->
+      <div class="button-group">
+        <button type="button" class="btn btn-primary" onclick="generarEtiqueta()">GENERAR ETIQUETA</button>
+        <button type="button" class="btn btn-secondary" onclick="copiarTexto()">COPIAR</button>
+        <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">LIMPIAR</button>
+      </div>
+
+      <!-- Etiqueta Generada -->
+      <div class="form-group">
+        <label for="resultado">Etiqueta generada</label>
+        <textarea id="resultado" readonly placeholder="Aquí aparecerá la etiqueta..."></textarea>
+      </div>
+
+      <!-- Caja de Ejemplo del Formato -->
+      <div class="example-box">
+        <strong>Ejemplo:</strong>
+        <div class="example-code">
+          MIGRACION_TN-ZONA_ABIERTA-TAREA_165211398:OLTZTEHD1SanJuandeCalderonUIO-G8/14-F01.N/A-L2-H0.0-3-PCH09B-3A-C-ROBERTO_SORIA
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function formatearTexto(texto) {
+      return texto.trim().toUpperCase().replace(/\s+/g, '_');
+    }
+
+    function generarEtiqueta() {
+      const zona = document.getElementById('tipoZona').value;
+      const tarea = document.getElementById('numTarea').value.trim();
+      const elemento = document.getElementById('elemento').value.trim();
+      const tecnico = document.getElementById('tecnico').value.trim();
+
+      if (!zona || !tarea || !elemento || !tecnico) {
+        alert('Por favor complete todos los campos.');
+        return;
+      }
+
+      const zonaFormateada = formatearTexto(zona);
+      const tecnicoFormateado = formatearTexto(tecnico);
+
+      // Formato exacto: MIGRACION_TN-ZONA_ABIERTA-TAREA_165211398:ELEMENTO-TECNICO
+      const etiquetaFinal = `MIGRACION_TN-${zonaFormateada}-TAREA_${tarea}:${elemento}-${tecnicoFormateado}`;
+
+      document.getElementById('resultado').value = etiquetaFinal;
+    }
+
+    function copiarTexto() {
+      const resultado = document.getElementById('resultado');
+
+      if (!resultado.value) {
+        alert('No hay ninguna etiqueta generada para copiar.');
+        return;
+      }
+
+      resultado.select();
+      navigator.clipboard.writeText(resultado.value).then(() => {
+        alert('¡Etiqueta copiada al portapapeles!');
+      });
+    }
+
+    function limpiarFormulario() {
+      document.getElementById('etiquetaForm').reset();
+      document.getElementById('resultado').value = '';
+    }
+  </script>
+
+</body>
+</html>
